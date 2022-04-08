@@ -25,6 +25,13 @@ export const UseFetch = function(endpoint = "", dependencies = [], onLoadEnd = (
   }, [endpoint, ...dependencies]);
 
 
+  /**
+   * Process to a post request
+   * @param path
+   * @param body
+   * @param init
+   * @returns {Promise<any>}
+   */
   async function post(path, body, init = null) {
     setIsLoading(true);
     init = init ? init : {
