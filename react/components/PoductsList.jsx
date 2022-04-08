@@ -2,27 +2,18 @@ import { Product } from "./Product";
 import { useEffect, useState } from "react";
 import { ProductPlaceholder } from "./ProductPlaceholder";
 import styled from "styled-components";
+import {UseFetch} from "../hooks/UseFetch";
 
 export const ProductsList = function ({ category }) {
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
 
   // Fethching products.
-  useEffect(() => {
-    async function getProducts() {
-      setIsLoading(true);
-      const response = await fetch("/api/products");
-      setProducts(await response.json());
-      setIsLoading(false);
-    }
-    getProducts().catch(() => setIsLoading(false));
-  }, []);
+  const {isLoading, apiData} = UseFetch('/api/products', []);
 
   return (
     <ProductListContainer>
       {isLoading
         ? [1, 2, 3, 4, 5].map((index) => <ProductPlaceholder key={index} />)
-        : products
+        : apiData
             .filter(
               (product) => category === 0 || product.category.id === category
             )

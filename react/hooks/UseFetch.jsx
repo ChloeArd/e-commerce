@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 
-export const UseFetch = function(endpoint) {
+export const UseFetch = function(endpoint, dependencies = [], onLoadEnd = () => {}) {
 
   const [apiData, setApiData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -19,8 +19,10 @@ export const UseFetch = function(endpoint) {
         setIsLoading(false);
         setApiData({});
       });
+
+      onLoadEnd();
     }
-  }, [endpoint]);
+  }, [endpoint, ...dependencies]);
 
   return {isLoading, apiData};
 }

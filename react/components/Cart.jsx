@@ -3,27 +3,16 @@ import { useState, useEffect, useContext } from "react";
 import { Loader } from "./Loader";
 import styled from "styled-components";
 import { CartContextProvider } from "../context/CartContext";
+import {UseFetch} from "../hooks/UseFetch";
+
 
 export const Cart = function () {
-  const [cartItems, setCartItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const { cartUpdated, setCartUpdated } = useContext(CartContextProvider);
 
   /**
    * Récupération du Cart actuel.
    */
-  useEffect(() => {
-    async function getCart() {
-      setIsLoading(true);
-      const response = await fetch("/api/cart");
-      const data = await response.json();
-      setCartItems(data.cartItems);
-      setCartUpdated(false);
-      setIsLoading(false);
-    }
-
-    getCart().catch(() => setIsLoading(false));
-  }, [cartUpdated]);
+  const {isLoading, apiData} = UseFetch('/api/cart', [cartUpdated], () => setCartUpdated(false));
 
   /**
    * Supression du cart
@@ -41,8 +30,8 @@ export const Cart = function () {
       <CartContent>
         {isLoading ? (
           <Loader />
-        ) : (
-          cartItems.map((cartItem) => (
+        ) : ( !isLoading &&
+          apiData.cartItems.map((cartItem) => (
             <CartItem key={cartItem.product.id} cartItem={cartItem} />
           ))
         )}
