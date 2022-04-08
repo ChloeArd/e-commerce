@@ -17,12 +17,11 @@ export const Product = function ({ className, product }) {
    * @returns {Promise<void>}
    */
   async function handleClick(productId, amount) {
-    const productData = {
+
+    await post("/api/cart/add", {
       product_id: productId,
       quantity: amount,
-    };
-
-    await post("/api/cart/add", productData);
+    });
 
     const data = await post("/api/product/stock", {product_id: productId});
     setStock(data.stock);
