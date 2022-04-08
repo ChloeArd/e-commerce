@@ -38,4 +38,5 @@ const CategorySelection = styled.select`
   padding: 3px 8px;
   min-width: 200px;
   background-color: ${({ theme }) => theme.components.background};
+  color: ${({ theme }) => theme.components.textColor};
 `;
