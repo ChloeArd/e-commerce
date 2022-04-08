@@ -1,27 +1,17 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
+import {UseFetch} from "../hooks/UseFetch";
 
 export const Categories = function ({ setCategory }) {
-  const [categories, setCategories] = useState([]);
   const defaultCategory = { id: 0, name: "Tout" };
-
-  useEffect(() => {
-    async function getCategories() {
-      const response = await fetch("/api/categories");
-      const data = await response.json();
-      setCategories([defaultCategory, ...data]);
-    }
-    getCategories().catch(() =>
-      console.log("Erreur de récupération de scatégories :-)")
-    );
-  }, []);
+  const {isLoading, apiData} = UseFetch('/api/categories');
 
   return (
     <>
       <CategorySelection
         onChange={(e) => setCategory(parseInt(e.target.value))}
       >
-        {categories.map((category) => (
+        {! isLoading && [defaultCategory, ...apiData] .map((category) => (
           <option value={category.id} key={category.id}>
             {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
           </option>

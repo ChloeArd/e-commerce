@@ -22,5 +22,5 @@ export const UseFetch = function(endpoint) {
     }
   }, [endpoint]);
 
-  return {isLoading, apiData}
+  return {isLoading, apiData};
 }
