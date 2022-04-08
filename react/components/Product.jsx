@@ -2,10 +2,13 @@ import { useState, useContext } from "react";
 import styled from "styled-components";
 import { lighten } from "polished";
 import { CartContextProvider } from "../context/CartContext";
+import { UseFetch } from "../hooks/UseFetch";
 
 export const Product = function ({ className, product }) {
   const [stock, setStock] = useState(product.stock);
   const { setCartUpdated } = useContext(CartContextProvider);
+  const {post} = UseFetch();
+
 
   /**
    * Handle click on + and - buttons.
@@ -14,34 +17,18 @@ export const Product = function ({ className, product }) {
    * @returns {Promise<void>}
    */
   async function handleClick(productId, amount) {
-    const fetchInit = {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+    const productData = {
+      product_id: productId,
+      quantity: amount,
     };
 
-    // Add or remove to cart.
-    await fetch("/api/cart/add", {
-      ...fetchInit,
-      body: JSON.stringify({
-        product_id: productId,
-        quantity: amount,
-      }),
-    });
+    await post("/api/cart/add", productData);
 
-    // Getting new product stock
-    const response = await fetch("/api/product/stock", {
-      ...fetchInit,
-      body: JSON.stringify({
-        product_id: productId,
-      }),
-    });
-    const data = await response.json();
+    const data = await post("/api/product/stock", {product_id: productId});
     setStock(data.stock);
     setCartUpdated(true);
   }
+
 
   return (
     <ProductContainer>

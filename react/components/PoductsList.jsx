@@ -1,5 +1,4 @@
 import { Product } from "./Product";
-import { useEffect, useState } from "react";
 import { ProductPlaceholder } from "./ProductPlaceholder";
 import styled from "styled-components";
 import {UseFetch} from "../hooks/UseFetch";
@@ -7,7 +6,7 @@ import {UseFetch} from "../hooks/UseFetch";
 export const ProductsList = function ({ category }) {
 
   // Fethching products.
-  const {isLoading, apiData} = UseFetch('/api/products', []);
+  const {isLoading, apiData} = UseFetch('/api/products');
 
   return (
     <ProductListContainer>
