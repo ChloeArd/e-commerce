@@ -12,7 +12,7 @@ export const Cart = function () {
   /**
    * Récupération du Cart actuel.
    */
-  const {isLoading, apiData} = UseFetch('/api/cart', [cartUpdated], () => setCartUpdated(false));
+  const {isLoading, apiData, error} = UseFetch('/api/cart', [cartUpdated], () => setCartUpdated(false));
 
   /**
    * Supression du cart
@@ -23,7 +23,7 @@ export const Cart = function () {
     setCartUpdated(true);
   }
 
-  return (
+  return error ? (<span>Erreur de récupération du panier</span>) : (
     <CartContainer>
         <h2>Vos articles</h2>
 

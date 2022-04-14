@@ -7,7 +7,7 @@ import { UseFetch } from "../hooks/UseFetch";
 export const Product = function ({ className, product }) {
   const [stock, setStock] = useState(product.stock);
   const { setCartUpdated } = useContext(CartContextProvider);
-  const {post} = UseFetch();
+  const {post, error} = UseFetch();
 
 
   /**
